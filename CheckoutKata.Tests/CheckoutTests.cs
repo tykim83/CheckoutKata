@@ -20,7 +20,8 @@ public class CheckoutTests
             new Item()
             {
                 SKU = 'B',
-                UnitPrice = 15.0m
+                UnitPrice = 15.0m,
+                Discount = new Discount() { UnitRequired = 3, Value = 40, DiscountType = DiscountType.Fixed }
             },
             new Item()
             {
@@ -30,7 +31,8 @@ public class CheckoutTests
             new Item()
             {
                 SKU = 'D',
-                UnitPrice = 55.0m
+                UnitPrice = 55.0m,
+                Discount = new Discount() { UnitRequired = 2, Value = 25, DiscountType = DiscountType.Percentage }
             }
         };
 
@@ -77,6 +79,34 @@ public class CheckoutTests
     [InlineData(new char[] { 'A', 'B', 'C', 'D' }, 120)]
     [InlineData(new char[] { 'A', 'A', 'A' }, 30)]
     public void CalculateTotal_ShouldCalculateCorrectTotal_GivenMultipleItemsHaveBeenAddedToTheBasket(char[] itemsToScan, decimal total)
+    {
+        _checkout.Scan(itemsToScan);
+
+        var result = _checkout.CalculateTotal();
+
+        result.Should().Be(total);
+    }
+
+    [Theory]
+    [InlineData(new char[] { 'B', 'B' }, 30)]
+    [InlineData(new char[] { 'B', 'B', 'B' }, 40)]
+    [InlineData(new char[] { 'B', 'B', 'B', 'B' }, 55)]
+    [InlineData(new char[] { 'B', 'B', 'B', 'B', 'B', 'B' }, 80)]
+    public void CalculateTotal_ShouldCalculateCorrectTotal_GivenMultipleItemsWithFixedDiscountHaveBeenAddedToTheBasket(char[] itemsToScan, decimal total)
+    {
+        _checkout.Scan(itemsToScan);
+
+        var result = _checkout.CalculateTotal();
+
+        result.Should().Be(total);
+    }
+
+    [Theory]
+    [InlineData(new char[] { 'D' }, 55)]
+    [InlineData(new char[] { 'D', 'D' }, 82.5)]
+    [InlineData(new char[] { 'D', 'D', 'D' }, 137.5)]
+    [InlineData(new char[] { 'D', 'D', 'D', 'D' }, 165)]
+    public void CalculateTotal_ShouldCalculateCorrectTotal_GivenMultipleItemsWithPercentageDiscountHaveBeenAddedToTheBasket(char[] itemsToScan, decimal total)
     {
         _checkout.Scan(itemsToScan);
 
