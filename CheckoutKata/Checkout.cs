@@ -13,7 +13,22 @@ public class Checkout : ICheckout
 
     public IEnumerable<BasketItem> Scan(char[] itemsSku)
     {
-        throw new NotImplementedException();
+        foreach (var sku in itemsSku)
+        {
+            if (_basket.Any(c => c.SKU == sku))
+            {
+                _basket.Single(c => c.SKU == sku).Quantity++;
+                continue;
+            }
+
+            _basket.Add(new BasketItem()
+            {
+                SKU = sku,
+                Quantity = 1
+            });
+        }
+
+        return _basket;
     }
 }
 

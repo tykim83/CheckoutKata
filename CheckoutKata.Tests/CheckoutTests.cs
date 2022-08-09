@@ -27,4 +27,17 @@ public class CheckoutTests
         result.Should().HaveCount(1);
         result.Should().ContainSingle(x => x.SKU == 'A');
     }
+
+    [Fact]
+    public void Scan_ShouldAddMultipleItemsToTheBasket_GivenValidItemsToAdd()
+    {
+        var itemsToScan = new char[] { 'A', 'A', 'C' };
+
+        var result = _checkout.Scan(itemsToScan);
+
+        result.Should().NotBeEmpty();
+        result.Should().HaveCount(2);
+        result.Should().ContainSingle(x => x.SKU == 'A' && x.Quantity == 2);
+        result.Should().ContainSingle(x => x.SKU == 'C' && x.Quantity == 1);
+    }
 }
