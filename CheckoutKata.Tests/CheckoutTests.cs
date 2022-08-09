@@ -11,7 +11,28 @@ public class CheckoutTests
 
     public CheckoutTests()
     {
-        var items = new List<Item>();
+        var items = new List<Item>()
+        {
+            new Item() {
+                SKU = 'A',
+                UnitPrice = 10.0m
+            },
+            new Item()
+            {
+                SKU = 'B',
+                UnitPrice = 15.0m
+            },
+            new Item()
+            {
+                SKU = 'C',
+                UnitPrice = 40.0m
+            },
+            new Item()
+            {
+                SKU = 'D',
+                UnitPrice = 55.0m
+            }
+        };
 
         _checkout = new Checkout(items);
     }
@@ -39,5 +60,15 @@ public class CheckoutTests
         result.Should().HaveCount(2);
         result.Should().ContainSingle(x => x.SKU == 'A' && x.Quantity == 2);
         result.Should().ContainSingle(x => x.SKU == 'C' && x.Quantity == 1);
+    }
+
+    [Fact]
+    public void Scan_ShouldNotAddTheItemToTheBasket_GivenAnInvalidItemToAdd()
+    {
+        var itemsToScan = new char[] { 'F' };
+
+        var result = _checkout.Scan(itemsToScan);
+
+        result.Should().BeEmpty();
     }
 }
