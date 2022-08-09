@@ -36,6 +36,14 @@ public class Checkout : ICheckout
 
     public decimal CalculateTotal()
     {
-        throw new NotImplementedException();
+        decimal total = 0;
+
+        foreach (var basketItem in _basket)
+        {
+            var item = _itemsList.Single(c => c.SKU == basketItem.SKU);
+            total += basketItem.Quantity * item.UnitPrice;
+        }
+
+        return total;
     }
 }
