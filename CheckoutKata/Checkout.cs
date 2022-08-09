@@ -15,6 +15,9 @@ public class Checkout : ICheckout
     {
         foreach (var sku in itemsSku)
         {
+            if (!_itemsList.Any(c => c.SKU == sku))
+                continue;
+
             if (_basket.Any(c => c.SKU == sku))
             {
                 _basket.Single(c => c.SKU == sku).Quantity++;
