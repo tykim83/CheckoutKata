@@ -33,6 +33,9 @@ public class Checkout : ICheckout
 
         return _basket;
     }
+
+    public decimal CalculateTotal()
+    {
+        throw new NotImplementedException();
+    }
 }
-
-

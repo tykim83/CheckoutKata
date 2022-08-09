@@ -71,4 +71,17 @@ public class CheckoutTests
 
         result.Should().BeEmpty();
     }
+
+    [Theory]
+    [InlineData(new char[] { 'A', 'B' }, 25)]
+    [InlineData(new char[] { 'A', 'B', 'C', 'D' }, 120)]
+    [InlineData(new char[] { 'A', 'A', 'A' }, 30)]
+    public void CalculateTotal_ShouldCalculateCorrectTotal_GivenMultipleItemsHaveBeenAddedToTheBasket(char[] itemsToScan, decimal total)
+    {
+        _checkout.Scan(itemsToScan);
+
+        var result = _checkout.CalculateTotal();
+
+        result.Should().Be(total);
+    }
 }
