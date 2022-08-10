@@ -53,28 +53,14 @@ public class Checkout : ICheckout
 
         if (item.Discount is not null)
         {
-            discount = item.Discount.DiscountType switch
+            discount = item.Discount.Type switch
             {
-                DiscountType.Fixed => CalculateFlatDiscount(basketItem, item),
-                DiscountType.Percentage => CalculatePercentageDiscount(basketItem, item),
+                DiscountType.Fixed => Functions.CalculateFlatDiscount(basketItem, item),
+                DiscountType.Percentage => Functions.CalculatePercentageDiscount(basketItem, item),
                 _ => 0.0m,
             };
         }
 
         return basketItem.Quantity * item.UnitPrice - discount;
     }
-
-    private readonly Func<BasketItem, Item, decimal> CalculateFlatDiscount = (basketItem, item) =>
-    {
-        var discountMultiplier = basketItem.Quantity / item.Discount!.UnitRequired;
-        var fullPrice = item.UnitPrice * item.Discount.UnitRequired;
-        return (fullPrice - item.Discount.Value) * discountMultiplier;
-    };
-
-    private readonly Func<BasketItem, Item, decimal> CalculatePercentageDiscount = (basketItem, item) =>
-    {
-        var discountMultiplier = basketItem.Quantity / item.Discount!.UnitRequired;
-        var fullPrice = item.UnitPrice * item.Discount.UnitRequired;
-        return (fullPrice * item.Discount.Value / 100) * discountMultiplier;
-    };
 }

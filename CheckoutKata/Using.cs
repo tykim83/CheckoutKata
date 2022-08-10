@@ -1,1 +1,2 @@
-﻿global using CheckoutKata.Models;
+﻿global using CheckoutKata.Helpers;
+global using CheckoutKata.Models;

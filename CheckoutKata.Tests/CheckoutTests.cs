@@ -21,7 +21,7 @@ public class CheckoutTests
             {
                 SKU = 'B',
                 UnitPrice = 15.0m,
-                Discount = new Discount() { UnitRequired = 3, Value = 40, DiscountType = DiscountType.Fixed }
+                Discount = new Discount() { UnitsRequired = 3, Value = 40, Type = DiscountType.Fixed }
             },
             new Item()
             {
@@ -32,7 +32,7 @@ public class CheckoutTests
             {
                 SKU = 'D',
                 UnitPrice = 55.0m,
-                Discount = new Discount() { UnitRequired = 2, Value = 25, DiscountType = DiscountType.Percentage }
+                Discount = new Discount() { UnitsRequired = 2, Value = 0.25m, Type = DiscountType.Percentage }
             }
         };
 
